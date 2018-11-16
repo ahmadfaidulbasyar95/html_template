@@ -1,6 +1,6 @@
 _Bbc(function($){
 
-		window.bbc_select_ac = function(element,index) 
+		window.select_autocomplete = function(element,index) 
 		{
 			if (!element.hasClass('loaded'))
 			{
@@ -15,7 +15,7 @@ _Bbc(function($){
 				var required    = (element.attr('required')) ? 'required="required"' : '';
 				var placeholder = (element.attr('placeholder')) ? 'placeholder="'+element.attr('placeholder')+'"' : '';
 				
-				$('<div class="bbc_select_ac_results ac_'+index+'" data-index="'+index+'" style="position: absolute; display: none;"> <input type="text" '+required+' '+placeholder+' class="'+element.attr('class').replace('bbc_select_ac','').replace('loaded','')+' bbc_select_ac_filter" data-max_item="'+max_item+'" data-delay="'+delay+'" data-index="'+index+'" > <div class="list-group item_group" style="display: none;"> </div> </div>').insertAfter(element);
+				$('<div class="select_autocomplete_results ac_'+index+'" data-index="'+index+'" style="position: absolute; display: none;"> <input type="text" '+required+' '+placeholder+' class="'+element.attr('class').replace('select_autocomplete','').replace('loaded','')+' select_autocomplete_filter" data-max_item="'+max_item+'" data-delay="'+delay+'" data-index="'+index+'" > <div class="list-group item_group" style="display: none;"> </div> </div>').insertAfter(element);
 
 				element.find('option').data('label_group', '');
 
@@ -33,28 +33,28 @@ _Bbc(function($){
 			}
 		}
 
-		$('body').on('click', '.bbc_select_ac', function(event) {
+		$('body').on('click', '.select_autocomplete', function(event) {
 			var index = $(this).data('index');
-			$('.bbc_select_ac_results.ac_'+index).fadeIn(1);
+			$('.select_autocomplete_results.ac_'+index).fadeIn(1);
 			setTimeout(function() {
-				$('.bbc_select_ac_filter.ac_'+index).focus();
-				if ($('.bbc_select_ac_results.ac_'+index+' .item_group a.item').length >= 1) 
+				$('.select_autocomplete_filter.ac_'+index).focus();
+				if ($('.select_autocomplete_results.ac_'+index+' .item_group a.item').length >= 1) 
 				{
-					$('.bbc_select_ac_results.ac_'+index+' .item_group').fadeIn(100);
+					$('.select_autocomplete_results.ac_'+index+' .item_group').fadeIn(100);
 				}else {
 					setTimeout(function() {
-						$('.bbc_select_ac_filter.ac_'+index).trigger('keyup');
+						$('.select_autocomplete_filter.ac_'+index).trigger('keyup');
 					}, 500);
 				}
 			}, 2);
 		});
 
-		$('body').append('<style type="text/css"> .bbc_select_ac optgroup , .bbc_select_ac option {display: none; } </style>');
+		$('body').append('<style type="text/css"> .select_autocomplete optgroup , .select_autocomplete option {display: none; } </style>');
 
-		$('body').on('change', '.bbc_select_ac', function(event) {
+		$('body').on('change', '.select_autocomplete', function(event) {
 			var index = $(this).data('index');
 
-			$('.bbc_select_ac_filter.ac_'+index).blur();
+			$('.select_autocomplete_filter.ac_'+index).blur();
 
 			if ($(this).data('callback')) 
 			{
@@ -62,12 +62,12 @@ _Bbc(function($){
 			}
 		});
 
-		$('body').on('mouseenter', '.bbc_select_ac_results .item_group .item', function(event) {
+		$('body').on('mouseenter', '.select_autocomplete_results .item_group .item', function(event) {
 			$(this).addClass('active').siblings('.item').removeClass('active');
 		});
 
-		$('body').on('keydown', '.bbc_select_ac_filter', function(event) {
-			var result = $('.bbc_select_ac_results.ac_'+$(this).data('index'));
+		$('body').on('keydown', '.select_autocomplete_filter', function(event) {
+			var result = $('.select_autocomplete_results.ac_'+$(this).data('index'));
 
 			if (result.find('a.item').length >= 1) 
 			{
@@ -105,14 +105,14 @@ _Bbc(function($){
 			}
 		});
 
-		var bbc_select_ac_delay ;
-		$('body').on('keyup', '.bbc_select_ac_filter', function(event) {
+		var select_autocomplete_delay ;
+		$('body').on('keyup', '.select_autocomplete_filter', function(event) {
 			var element = $(this);
 			var value   = element.val();
 
-			clearTimeout(bbc_select_ac_delay);
+			clearTimeout(select_autocomplete_delay);
 
-			bbc_select_ac_delay = setTimeout(function() {
+			select_autocomplete_delay = setTimeout(function() {
 				if (element.data('last_input') != value) 
 				{
 					var max_item  = element.data('max_item');
@@ -122,7 +122,7 @@ _Bbc(function($){
 
 					element.data('last_input', value);
 					
-					$('.bbc_select_ac.ac_'+index+' option').filter(function(idx) {
+					$('.select_autocomplete.ac_'+index+' option').filter(function(idx) {
 						var r = false;
 						if (found < max_item || !value && found < 3000) 
 						{
@@ -141,49 +141,49 @@ _Bbc(function($){
 
 					if (found == 0) 
 					{
-						$('.bbc_select_ac_results.ac_'+index+' .item_group').fadeOut(200);
+						$('.select_autocomplete_results.ac_'+index+' .item_group').fadeOut(200);
 						setTimeout(function() {
-							$('.bbc_select_ac_results.ac_'+index+' .item_group').html(data_item);
+							$('.select_autocomplete_results.ac_'+index+' .item_group').html(data_item);
 						}, 300);
 					}else
 					{
-						$('.bbc_select_ac_results.ac_'+index+' .item_group').html(data_item);
-						$('.bbc_select_ac_results.ac_'+index+' .item_group').fadeIn(200);
+						$('.select_autocomplete_results.ac_'+index+' .item_group').html(data_item);
+						$('.select_autocomplete_results.ac_'+index+' .item_group').fadeIn(200);
 					}
 				}
 			}, element.data('delay'));
 		});
 
-		$('body').on('click', '.bbc_select_ac_results a.item', function(event) {
+		$('body').on('click', '.select_autocomplete_results a.item', function(event) {
 			event.preventDefault();
-			var index = $(this).parents('.bbc_select_ac_results').data('index');
+			var index = $(this).parents('.select_autocomplete_results').data('index');
 			if (!$(this).hasClass('active')) 
 			{
-				$(this).parents('.bbc_select_ac_results').find('a.item.active').removeClass('active');
+				$(this).parents('.select_autocomplete_results').find('a.item.active').removeClass('active');
 				$(this).addClass('active');
 			}
-			$('.bbc_select_ac_filter.ac_'+index).data('last_input', $(this).html());
-			$('.bbc_select_ac.ac_'+index).val($(this).attr('value')).trigger('change');
+			$('.select_autocomplete_filter.ac_'+index).data('last_input', $(this).html());
+			$('.select_autocomplete.ac_'+index).val($(this).attr('value')).trigger('change');
 		});
 
-		$('body').on('focusout', '.bbc_select_ac_filter', function(event) {
+		$('body').on('focusout', '.select_autocomplete_filter', function(event) {
 			var index = $(this).data('index');
 
-			if ($('.bbc_select_ac.ac_'+index).val()) 
+			if ($('.select_autocomplete.ac_'+index).val()) 
 			{
-				$(this).val($('.bbc_select_ac.ac_'+index).find('option[value="'+$('.bbc_select_ac.ac_'+index).val()+'"]').html());
+				$(this).val($('.select_autocomplete.ac_'+index).find('option[value="'+$('.select_autocomplete.ac_'+index).val()+'"]').html());
 			}else
 			{
 				$(this).val('');
 			}
 
 			setTimeout(function() {
-				$('.bbc_select_ac_results.ac_'+index+' .item_group').fadeOut(500);
-				$('.bbc_select_ac_results.ac_'+index).fadeOut(500);
+				$('.select_autocomplete_results.ac_'+index+' .item_group').fadeOut(500);
+				$('.select_autocomplete_results.ac_'+index).fadeOut(500);
 			}, 200);
 		});
 
-		$('.bbc_select_ac').each(function(index, el) {
-			window.bbc_select_ac($(this),index);
+		$('.select_autocomplete').each(function(index, el) {
+			window.select_autocomplete($(this),index);
 		});
 	});
