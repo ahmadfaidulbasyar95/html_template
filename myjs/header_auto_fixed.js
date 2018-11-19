@@ -1,21 +1,21 @@
 _Bbc(function($){
-		var bbc_header_fixed_active = 1;
-		if ($('.bbc_header_fixed').hasClass('disable_mobile')) 
+		var header_auto_fixed_active = 1;
+		if ($('.header_auto_fixed').hasClass('disable_mobile')) 
 		{
 			if ($(window).width() <= 768) 
 			{
-				bbc_header_fixed_active = 0;
+				header_auto_fixed_active = 0;
 			}
 		}
-		if (bbc_header_fixed_active) 
+		if (header_auto_fixed_active) 
 		{
 			setTimeout(function() {
-				if ($('.bbc_header_fixed').hasClass('disable_add_block')) {}else
+				if ($('.header_auto_fixed').hasClass('disable_add_block')) {}else
 				{
-					$('<div class="bbc_header_fixed_box"></div>').insertAfter('.bbc_header_fixed');
-					$('.bbc_header_fixed_box').height($('.bbc_header_fixed').outerHeight(true));
+					$('<div class="header_auto_fixed_box"></div>').insertAfter('.header_auto_fixed');
+					$('.header_auto_fixed_box').height($('.header_auto_fixed').outerHeight(true));
 				}
-				$('.bbc_header_fixed').css({
+				$('.header_auto_fixed').css({
 					'position': 'fixed',
 					'z-index':  '1049',
 					'width':    '100%'
@@ -25,7 +25,7 @@ _Bbc(function($){
 				var height_auto = [];
 				var set_opacity = [];
 				var enebled = [];
-				$('.bbc_header_fixed_hide').each(function(index, el) {
+				$('.header_auto_fixed_hide').each(function(index, el) {
 
 					enebled[index] = 1;
 					if ($(this).hasClass('disable_mobile')) 
@@ -62,25 +62,25 @@ _Bbc(function($){
 						height_auto[index] = 0;
 					}
 				});
-				if ($('.bbc_header_fixed').hasClass('force_fixed')) { $('.bbc_header_fixed').addClass('fixed'); }
+				if ($('.header_auto_fixed').hasClass('force_fixed')) { $('.header_auto_fixed').addClass('fixed'); }
 				var window_scroll = $(window).scrollTop();
 				$(window).scroll(function(event) {
 					window_scroll = $(window).scrollTop();
 					if (window_scroll == 0) 
 					{
-						if ($('.bbc_header_fixed').hasClass('force_fixed')) 
+						if ($('.header_auto_fixed').hasClass('force_fixed')) 
 						{ 
-							$('.bbc_header_fixed').addClass('fixed'); 
+							$('.header_auto_fixed').addClass('fixed'); 
 						}else
 						{
-							$('.bbc_header_fixed').removeClass('fixed');
+							$('.header_auto_fixed').removeClass('fixed');
 						}
 					}else
 					{
-						$('.bbc_header_fixed').addClass('fixed');
+						$('.header_auto_fixed').addClass('fixed');
 					}
 					window_scroll = window_scroll / 10;
-					$('.bbc_header_fixed_hide').each(function(index, el) {
+					$('.header_auto_fixed_hide').each(function(index, el) {
 						if (enebled[index]) 
 						{
 							if (window_scroll <= 1) 

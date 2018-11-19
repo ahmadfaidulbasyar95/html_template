@@ -1,23 +1,23 @@
 _Bbc(function($){	
-		var Upload = function (file,d_url,s_progress,callback,i_name) {
+		var FileUploaderProgress = function (file,d_url,s_progress,callback,i_name) {
 			this.file            = file;
 			this.url             = d_url;
 			this.progress        = s_progress;
 			this.callback        = callback;
 			this.i_name          = i_name;
-			window.bbc_file_ajax = this;
+			window.file_uploader = this;
 		};
 
-		Upload.prototype.getType = function() {
+		FileUploaderProgress.prototype.getType = function() {
 			return this.file.type;
 		};
-		Upload.prototype.getSize = function() {
+		FileUploaderProgress.prototype.getSize = function() {
 			return this.file.size;
 		};
-		Upload.prototype.getName = function() {
+		FileUploaderProgress.prototype.getName = function() {
 			return this.file.name;
 		};
-		Upload.prototype.doUpload = function () {
+		FileUploaderProgress.prototype.doUpload = function () {
 			var that     = this;
 			var formData = new FormData();
 
@@ -55,8 +55,8 @@ _Bbc(function($){
 			});
 		};
 
-		Upload.prototype.progressHandling = function (event) {
-			var that = window.bbc_file_ajax;
+		FileUploaderProgress.prototype.progressHandling = function (event) {
+			var that = window.file_uploader;
 			if (that.progress) 
 			{
 				var percent = 0;
@@ -76,7 +76,7 @@ _Bbc(function($){
 			}
 		};
 
-		$('body').on('change', '.bbc_file_ajax', function(event) {
+		$('body').on('change', '.file_uploader', function(event) {
 			var file       = $(this)[0].files[0];
 			var d_url      = $(this).data('url');
 			var s_progress = $(this).data('progress');
@@ -90,7 +90,7 @@ _Bbc(function($){
 				$(s_progress).html('<span class="status">0%</span><div class="progress-bar"></div>');
 			}
 
-	    var upload = new Upload(file,d_url,s_progress,callback,i_name);
+	    var upload = new FileUploaderProgress(file,d_url,s_progress,callback,i_name);
 
 	    // maby check size or type here with upload.getSize() and upload.getType()
 
