@@ -21,12 +21,19 @@ _Bbc(function($){
 					'width':    '100%'
 				});
 				var current_height = [];
+				var hide_speed = [];
 				var min_height = [];
 				var height_auto = [];
 				var set_opacity = [];
 				var enebled = [];
 				$('.header_auto_fixed_hide').each(function(index, el) {
-
+					hide_speed[index] = 1;
+					if ($(this).attr('hide_speed')) 
+					{
+						if (parseFloat($(this).attr('hide_speed'))) {
+							hide_speed[index] = parseFloat($(this).attr('hide_speed'));
+						}
+					}
 					enebled[index] = 1;
 					if ($(this).hasClass('disable_mobile')) 
 					{
@@ -103,7 +110,7 @@ _Bbc(function($){
 							{
 								if (current_height[index] - window_scroll >= min_height[index]) 
 								{
-									$(this).height(current_height[index] - window_scroll);
+									$(this).height(current_height[index] - window_scroll * hide_speed[index]);
 								}else
 								{
 									$(this).height(min_height[index]);
