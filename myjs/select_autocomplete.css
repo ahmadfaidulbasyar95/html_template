@@ -1,0 +1,24 @@
+.select_autocomplete_results {
+	background: white;
+	z-index: 99999999999999999;
+	border: 1px solid #c4c3c3;
+}
+.select_autocomplete_filter {
+	margin: 5px;
+	border-radius: 0;
+	width: calc(100% - 10px);
+	padding: 3px !important;
+}
+.select_autocomplete_results .item_group {
+	max-height: 300px;
+	overflow: auto;
+}
+.select_autocomplete_results .item {
+	border: 0;
+	border-radius: 0;
+	padding: 5px;
+	color: #535b61;
+}
+.select_autocomplete_results .item.active {
+	color: white;
+}
