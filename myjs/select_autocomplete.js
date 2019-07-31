@@ -7,8 +7,10 @@
 			{
 				element.addClass('ac_'+index).addClass('loaded').attr('data-index', index);
 
-				var max_item           = $(this).data('max_item');
+				var max_item           = element.data('max_item');
+				var max_item_show      = element.data('max_item_show');
 				if(!max_item) max_item = 10;
+				if(max_item_show==undefined) max_item_show = 3000;
 
 				var delay        = $(this).data('delay');
 				if(!delay) delay = 400;
@@ -16,25 +18,29 @@
 				var required    = (element.attr('required')) ? 'required="required"' : '';
 				var placeholder = (element.attr('placeholder')) ? 'placeholder="'+element.attr('placeholder')+'"' : '';
 				
-				$('<div class="select_autocomplete_results ac_'+index+'" data-index="'+index+'" style="position: absolute; display: none;"> <input type="text" '+required+' '+placeholder+' class="'+element.attr('class').replace('select_autocomplete','').replace('loaded','')+' select_autocomplete_filter" data-max_item="'+max_item+'" data-delay="'+delay+'" data-index="'+index+'" > <div class="list-group item_group" style="display: none;"> </div> </div>').insertAfter(element);
+				$('<div class="select_autocomplete_results ac_'+index+'" data-index="'+index+'" style="position: absolute; display: none;"> <input type="text" '+required+' '+placeholder+' class="'+element.attr('class').replace('select_autocomplete','').replace('loaded','')+' select_autocomplete_filter" data-max_item="'+max_item+'" data-max_item_show="'+max_item_show+'" data-delay="'+delay+'" data-index="'+index+'" > <div class="list-group item_group" style="display: none;"> </div> </div>').insertAfter(element);
 
-				element.find('option').data('label_group', '');
+				element.find('optgroup').each(function(idx, el) {
+					$(this).data('id', idx+1);
+				});
 
-				element.find('optgroup option:first-child()').each(function(index, el) {
-					var label = $(this).parent('optgroup').attr('label');
+				element.find('optgroup option').each(function(idx, el) {
+					var label_parent = $(this).parent('optgroup');
+					var label        = label_parent.attr('label');
 
 					if (label) {
 						$(this).data('label_group', '<h5 class="text-center"><b>'+label+'</b></h5>');
 					}else{
 						$(this).data('label_group', '<br>');
 					}
+					$(this).data('label_group_id', label_parent.data('id'));
 				});
 
 				element.trigger('change');
 			}
 		}
 
-		$('body').on('click', '.select_autocomplete', function(event) {
+		$('body').on('click keyup', '.select_autocomplete', function(event) {
 			event.preventDefault();
 			var index = $(this).data('index');
 			$('.select_autocomplete_results.ac_'+index).fadeIn(1);
@@ -117,16 +123,18 @@
 			select_autocomplete_delay = setTimeout(function() {
 				if (element.data('last_input') != value) 
 				{
-					var max_item  = element.data('max_item');
-					var index     = element.data('index');
-					var found     = 0;
-					var data_item = '';
+					var max_item          = element.data('max_item');
+					var max_item_show     = element.data('max_item_show');
+					var index             = element.data('index');
+					var found             = 0;
+					var data_item         = '';
+					var label_parent_show = [];
 
 					element.data('last_input', value);
 					
 					$('.select_autocomplete.ac_'+index+' option').filter(function(idx) {
 						var r = false;
-						if (found < max_item || !value && found < 3000) 
+						if (value && found < max_item || !value && found < max_item_show) 
 						{
 							r = ($(this).html().toLowerCase().search(value.toLowerCase()) != -1 && $(this).attr('value')) ? true : false;
 							if (r) 
@@ -141,8 +149,13 @@
 						if ($('.select_autocomplete.ac_'+index).data('display_function')) {
 							item_html = window[$('.select_autocomplete.ac_'+index).data('display_function')](item_html);
 						}
-						data_item    += $(this).data('label_group');
-						data_item    += '<a href="#" class="list-group-item item '+active+'" value="'+$(this).attr('value')+'">'+item_html+'</a>';
+						if ($(this).data('label_group_id') && $(this).data('label_group')) {
+							if ($.inArray($(this).data('label_group_id'), label_parent_show)==-1) {
+								data_item += $(this).data('label_group');
+								label_parent_show.push($(this).data('label_group_id'));
+							}
+						}
+						data_item += '<a href="#" class="list-group-item item '+active+'" value="'+$(this).attr('value')+'">'+item_html+'</a>';
 					});
 
 					if (found == 0) 
