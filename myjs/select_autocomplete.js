@@ -40,7 +40,7 @@
 			}
 		}
 
-		$('body').on('click keyup', '.select_autocomplete', function(event) {
+		$('body').on('click focusin', '.select_autocomplete', function(event) {
 			event.preventDefault();
 			var index = $(this).data('index');
 			$('.select_autocomplete_results.ac_'+index).fadeIn(1);
